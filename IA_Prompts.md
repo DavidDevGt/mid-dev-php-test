@@ -607,3 +607,64 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 ```
+
+
+## PROMPT
+
+```txt
+Dame una funcion para generar un token al estilo JWT con hs256 como algoritmo de encriptacion
+```
+
+## RESPONSE
+
+```txt
+Aquí tienes una función en PHP moderna que hace exactamente lo mismo que tu ejemplo: genera un **token tipo JWT** simple usando `HS256`, pero con un estilo limpio y listo para producción en **PHP 8**:
+
+```php
+<?php
+declare(strict_types=1);
+
+/**
+ * Genera un token estilo JWT (HS256) con un payload dado.
+ *
+ * @param array $payload Datos a incluir en el cuerpo del token.
+ * @return string Token firmado en formato header.payload.signature
+ */
+function generateToken(array $payload): string
+{
+    // Clave secreta desde .env o aleatoria si no existe
+    $secret = getenv('APP_KEY') ?: bin2hex(random_bytes(16));
+
+    // Función interna para codificar en Base64URL
+    $b64UrlEncode = static fn($data): string =>
+        rtrim(strtr(base64_encode(json_encode($data, JSON_UNESCAPED_SLASHES)), '+/', '-_'), '=');
+
+    // Header y Body del token
+    $header = $b64UrlEncode(['alg' => 'HS256', 'typ' => 'JWT']);
+    $body   = $b64UrlEncode($payload);
+
+    // Firma usando HMAC-SHA256
+    $signature = $b64UrlEncode(hash_hmac('sha256', "$header.$body", $secret, true));
+
+    return "$header.$body.$signature";
+}
+```
+
+### Explicación rápida
+
+* **`$secret`**: Usa la clave `APP_KEY` del entorno, si no existe, crea una clave aleatoria segura.
+* **`$b64UrlEncode`**: Genera Base64URL, necesario para JWT (sin `+`, `/` ni `=`).
+* **Firma**: Se crea con `hash_hmac('sha256')` usando la clave secreta.
+
+### Ejemplo de uso
+
+```php
+$token = generateToken(['user_id' => 123, 'role' => 'admin']);
+echo $token;
+```
+
+---
+
+Si quieres, puedo hacer también una **función `verifyToken`** para validar la firma y asegurarte de que nadie modificó el token. ¿Quieres que la agregue?
+
+```

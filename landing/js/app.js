@@ -24,15 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
             age--;
         }
-
         return age >= 18;
     }
 
-    // Real-time validation
+    // Validación en tiempo real
     form.addEventListener("input", (e) => {
         const field = e.target;
 
-        // Password
         if (field.name === "password") {
             const errorDiv = document.getElementById("passwordError");
             const errorMessage = validatePassword(field.value);
@@ -52,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Fecha de nacimiento
         if (field.name === "birthDate") {
             const errorDiv = field.nextElementSibling;
             if (field.value.length === 0) {
@@ -69,7 +66,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // Nombre y correo
         if (field.name === "firstName" || field.name === "email") {
             const errorDiv = field.nextElementSibling;
             if (field.value.length === 0) {
@@ -87,14 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-
-    // Form submission
-    form.addEventListener("submit", (e) => {
+    // Envío del formulario (real)
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         let isValid = true;
 
-        // Check all required fields
+        // Validación de campos requeridos
         const requiredFields = form.querySelectorAll("[required]");
         requiredFields.forEach(field => {
             if (!field.value.trim() && field.type !== 'checkbox') {
@@ -107,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Validate password
+        // Validación de contraseña
         const passwordField = form.querySelector('[name="password"]');
         const passwordError = validatePassword(passwordField.value);
         if (passwordError) {
@@ -117,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
             isValid = false;
         }
 
-        // Validate age
+        // Validación de edad
         const birthDateField = form.querySelector('[name="birthDate"]');
         if (birthDateField.value && !validateAge(birthDateField.value)) {
             birthDateField.classList.add("is-invalid");
@@ -125,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
             isValid = false;
         }
 
-        // Validate email
+        // Validación de correo
         const emailField = form.querySelector('[name="email"]');
         if (emailField.value && !emailField.checkValidity()) {
             emailField.classList.add("is-invalid");
@@ -133,65 +128,59 @@ document.addEventListener("DOMContentLoaded", () => {
             isValid = false;
         }
 
-        if (!isValid) {
-            return;
-        }
+        if (!isValid) return;
 
-        // Mock backend call - en producción reemplazar con fetch real
         const formData = new FormData(form);
         const userData = Object.fromEntries(formData.entries());
+        const submitBtn = form.querySelector('button[type="submit"]');
 
-        // Simulación de llamada al backend
-        console.log("Enviando datos al backend:", userData);
+        try {
+            submitBtn.disabled = true;
+            submitBtn.dataset.prevText = submitBtn.textContent;
+            submitBtn.textContent = "Enviando...";
 
-        // Aquí iría la llamada real al backend PHP:
-        /*
-        fetch('/api/register.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData)
-        })
-        .then(response => response.json())
-        .then(data => {
+            const API_BASE = window.location.hostname.includes('192.168.1.100')
+                ? 'http://192.168.1.100:8036'
+                : 'http://127.0.0.1:8036';
+
+            const res = await fetch(`${API_BASE}/api/registro.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+                cache: 'no-store',
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+
             if (data.success) {
                 alert("¡Registro exitoso!");
                 form.reset();
+                form.querySelectorAll(".form-control, .form-check-input").forEach(f => {
+                    f.classList.remove("is-valid", "is-invalid");
+                });
             } else {
-                alert("Error en el registro: " + data.message);
+                alert("Error en el registro: " + (data.message ?? 'Desconocido'));
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Error de conexión");
-        });
-        */
-
-        // Mock response
-        setTimeout(() => {
-            alert("¡Registro exitoso! (Simulado)");
-            form.reset();
-
-            // Remove all validation classes
-            const allFields = form.querySelectorAll(".form-control, .form-check-input");
-            allFields.forEach(field => {
-                field.classList.remove("is-valid", "is-invalid");
-            });
-        }, 500);
+        } catch (err) {
+            console.error(err);
+            alert("Error de conexión con el servidor");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = submitBtn.dataset.prevText || "Enviar";
+            delete submitBtn.dataset.prevText;
+        }
     });
 
-    // Smooth scrolling for navigation links
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 const offsetTop = target.offsetTop - 80;
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
             }
         });
     });
