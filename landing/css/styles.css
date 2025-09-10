@@ -1,0 +1,242 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    background-color: #f8f9fa !important;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #212529 !important;
+}
+
+.brand-circle {
+    width: 24px;
+    height: 24px;
+    background-color: #6c757d;
+    border-radius: 50%;
+}
+
+.nav-link {
+    color: #6c757d !important;
+    font-weight: 400;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: #495057 !important;
+}
+
+#registro {
+    background-color: #f8f9fa;
+    min-height: 60vh;
+    padding: 3rem 0;
+}
+
+#registro h2 {
+    font-weight: 600;
+    font-size: 1.75rem;
+    color: #212529;
+    margin-bottom: 2rem;
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #212529;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    background-color: #fff;
+    box-shadow: none;
+    margin-bottom: 1rem;
+}
+
+.form-control:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: -0.75rem;
+    margin-bottom: 1rem;
+    display: none;
+}
+
+.form-control.is-invalid+.error-message {
+    display: block;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+#productos {
+    background-color: #e9ecef !important;
+    padding: 3rem 0;
+}
+
+#productos h2 {
+    font-weight: 600;
+    font-size: 1.75rem;
+    color: #212529;
+    margin-bottom: 2rem;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 2rem 1rem;
+    text-align: center;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.product-title {
+    font-weight: 500;
+    font-size: 1rem;
+    color: #212529;
+    margin: 0;
+}
+
+.collapse-content {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    margin-top: 1rem;
+}
+
+.product-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-item img {
+    width: 40px;
+    height: 40px;
+    background-color: #6c757d;
+    border-radius: 4px;
+    margin-right: 0.75rem;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.social-icon {
+    width: 16px;
+    height: 16px;
+    background-color: #6c757d;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.social-icon:hover {
+    background-color: #495057;
+}
+
+footer {
+    background-color: #212529;
+    color: #fff;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+footer a {
+    color: #6c757d;
+    text-decoration: none;
+    margin: 0 1rem;
+}
+
+footer a:hover {
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column !important;
+        align-items: start;
+    }
+
+    .nav-link {
+        margin-right: 0 !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-card {
+        height: 150px;
+        margin-bottom: 1rem;
+    }
+
+    .product-icon {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+.error-message {
+    display: none;
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
