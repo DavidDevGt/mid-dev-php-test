@@ -8,3 +8,19 @@ CREATE TABLE IF NOT EXISTS usuarios (
     fecha_nacimiento DATE NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+-- CONSULTAS SOLICITADAS EN EL DOC
+SELECT *
+FROM usuarios
+WHERE fecha_registro >= NOW() - INTERVAL 30 DAY
+ORDER BY fecha_registro DESC;
+-- separador
+SELECT COUNT(*) AS total_gmail
+FROM usuarios
+WHERE LOWER(correo) LIKE '%@gmail.com';
+-- separador
+UPDATE usuarios
+SET nombre = 'Usuario 10 Renombrado'
+WHERE id = 10;
+-- separador
+DELETE FROM usuarios
+WHERE id = 15;
